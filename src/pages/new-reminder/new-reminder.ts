@@ -39,21 +39,23 @@ export class NewReminderPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
 
-    this.storage.set("reminders",[]);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad NewReminderPage');
   }
 
+  id:number = 0;
   save() {
 
     let reminderToSave = {
+      id: this.id++,
       name: this.name,
       description: this.description,
       time: this.time,
       days: this.days
      
+      
     }
     console.log(reminderToSave)
     
