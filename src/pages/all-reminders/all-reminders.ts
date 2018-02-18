@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from "@ionic/storage";
+import { NewReminderPage } from '../new-reminder/new-reminder';
 /**
  * Generated class for the AllRemindersPage page.
  *
@@ -37,6 +38,7 @@ export class AllRemindersPage {
   openReminder(reminder) {
 
     console.log(reminder);
+    this.navCtrl.push(NewReminderPage, reminder)
 
   }
 

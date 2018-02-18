@@ -38,6 +38,13 @@ export class NewReminderPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+    if (this.navParams.data.id) {
+      console.log(this.navParams)
+      this.name = this.navParams.data.name
+      this.days = this.navParams.data.days
+      this.time = this.navParams.data.time
+      this.description = this.navParams.data.description
+    }
   }
 
   ionViewDidLoad() {
@@ -51,7 +58,7 @@ export class NewReminderPage {
       if (remindersId == null) remindersId = 0;
 
       let reminderToSave = {
-        id: remindersId++,
+        id: ++remindersId,
         name: this.name,
         description: this.description,
         time: this.time,
