@@ -22,7 +22,7 @@ export class NewReminderPage {
   name: string;
   description: string;
   time: string = "12:00";
-  
+
   days: { name: string, selected: boolean }[] = [
 
     { name: "Monday", selected: false },
@@ -38,35 +38,43 @@ export class NewReminderPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
-
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad NewReminderPage');
   }
 
-  id:number = 0;
   save() {
 
-    let reminderToSave = {
-      id: this.id++,
-      name: this.name,
-      description: this.description,
-      time: this.time,
-      days: this.days
-     
-      
+    this.storage.get("remindersId").then(remindersId => {
+
+      if (remindersId == null) remindersId = 0;
+
+      let reminderToSave = {
+        id: remindersId++,
+        name: this.name,
+        description: this.description,
+        time: this.time,
+        days: this.days
+
+
+      }
+      this.storage.set("remindersId", remindersId)
+      console.log(reminderToSave)
+
+
+      this.storage.get("reminders").then(reminders => {
+
+        if (reminders == null) reminders = []
+        reminders.push(reminderToSave)
+        console.log(reminders);
+        this.storage.set('reminders', reminders);
+      })
+
+
     }
-    console.log(reminderToSave)
-    
 
-    this.storage.get("reminders").then(reminders => {
-
-      if (reminders == null) reminders = []
-      reminders.push(reminderToSave)
-      console.log(reminders);
-      this.storage.set('reminders', reminders);
-    })
+    )
 
   }
 }
