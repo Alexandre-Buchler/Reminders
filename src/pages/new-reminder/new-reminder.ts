@@ -3,13 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from "@ionic/storage";
 import { PageTransition } from 'ionic-angular/transitions/page-transition';
 import { AllRemindersPage } from '../all-reminders/all-reminders';
-
-/**
- * Generated class for the NewReminderPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Events } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -19,6 +13,7 @@ import { AllRemindersPage } from '../all-reminders/all-reminders';
 })
 export class NewReminderPage {
 
+  id: number = null;
   name: string;
   description: string;
   time: string = "12:00";
@@ -34,16 +29,14 @@ export class NewReminderPage {
     { name: "Sunday", selected: false }
   ]
 
-
-
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private events: Events) {
     if (this.navParams.data.id) {
       console.log(this.navParams)
       this.name = this.navParams.data.name
       this.days = this.navParams.data.days
       this.time = this.navParams.data.time
       this.description = this.navParams.data.description
+      this.id = this.navParams.data.id
     }
   }
 
@@ -53,38 +46,65 @@ export class NewReminderPage {
 
   save() {
 
-    this.storage.get("remindersId").then(remindersId => {
+    if (this.id == null) {
+      this.storage.get("remindersId").then(remindersId => {
 
-      if (remindersId == null) remindersId = 0;
+        if (remindersId == null) remindersId = 0;
 
-      let reminderToSave = {
-        id: ++remindersId,
-        name: this.name,
-        description: this.description,
-        time: this.time,
-        days: this.days
+        let reminderToSave = {
+          id: ++remindersId,
+          name: this.name,
+          description: this.description,
+          time: this.time,
+          days: this.days
+        }
+        this.storage.set("remindersId", remindersId)
+        console.log(reminderToSave)
 
+        this.storage.get("reminders").then(reminders => {
+          if (reminders == null) reminders = []
+          reminders.push(reminderToSave)
+          console.log(reminders);
+          this.storage.set('reminders', reminders).then(() => {
+          
+            this.events.publish('reminders:created', reminderToSave);
 
-      }
-      this.storage.set("remindersId", remindersId)
-      console.log(reminderToSave)
-
-
+            this.navCtrl.pop();
+          });
+       
+        })
+      }) 
+    }
+    else {
       this.storage.get("reminders").then(reminders => {
 
-        if (reminders == null) reminders = []
-        reminders.push(reminderToSave)
-        console.log(reminders);
-        this.storage.set('reminders', reminders);
+        for (let i = 0; i < reminders.length; i++) {
+
+          if (reminders[i].id == this.id) {
+            reminders[i].name = this.name;
+            reminders[i].description = this.description;
+            reminders[i].days = this.days;
+            reminders[i].time = this.time;
+
+            break
+          }
+        }
+        this.storage.set("reminders", reminders).then(()=>{
+          let reminderToUpdate = {
+            id: this.id,
+            name: this.name,
+            description: this.description,
+            time: this.time,
+            days: this.days
+          }
+          this.events.publish('reminders:updated', reminderToUpdate);
+          this.navCtrl.pop();
+        });
+
+      
       })
-
-
     }
-
-    )
-
   }
 }
-
 
 //import + constructor 

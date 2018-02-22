@@ -17,11 +17,16 @@
 <ion-content padding>
 
   <ion-list>
-    <ion-item *ngFor="let Reminder of reminders" (click)="openReminder(Reminder)">
+    <ion-item *ngFor="let reminder of reminders">
+    
       <ion-label>
-        {{Reminder.name}}
+        <h2 (click)="openReminder(reminder)" style="display: inline">{{reminder.name}}</h2>
+        <ion-icon name="trash" (click)="deleteReminder(reminder)" style="float: right"></ion-icon>
       </ion-label>
+      
     </ion-item>
   </ion-list>
-
+  <button ion-button color="secondary" (click)="newReminder()">
+    Add New Reminder
+  </button>
 </ion-content>

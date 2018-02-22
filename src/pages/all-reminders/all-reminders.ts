@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from "@ionic/storage";
 import { NewReminderPage } from '../new-reminder/new-reminder';
+import { Events } from 'ionic-angular';
+
 /**
  * Generated class for the AllRemindersPage page.
  *
@@ -17,6 +19,7 @@ import { NewReminderPage } from '../new-reminder/new-reminder';
 export class AllRemindersPage {
 
   reminders: {
+    id: number,
     name: string,
     description: string,
     time: string,
@@ -24,11 +27,22 @@ export class AllRemindersPage {
       name: string,
       selected: boolean
     }[]
-  }
+  }[]
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, private events: Events) {
 
+    events.subscribe('reminders:created', (reminderToSave) => {
+
+      this.reminders.push(reminderToSave);
+    })
+
+    events.subscribe('reminders:updated', (reminderToUpdate) => {
+
+      this.reminders = this.reminders.filter(reminder => reminder.id != reminderToUpdate.id)
+      this.reminders.push(reminderToUpdate)
+
+    })
     this.storage.get("reminders").then(allreminders => {
       this.reminders = allreminders;
 
@@ -39,11 +53,26 @@ export class AllRemindersPage {
 
     console.log(reminder);
     this.navCtrl.push(NewReminderPage, reminder)
-
+//stack
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AllRemindersPage');
   }
 
+  newReminder(){
+
+    this.navCtrl.push(NewReminderPage)
+  }
+
+  deleteReminder(reminderToDelete){
+    console.log(reminderToDelete)
+    this.reminders = this.reminders.filter(reminder =>{
+
+      reminder.id != reminderToDelete.id
+    })
+
+    
+
+  }
 }

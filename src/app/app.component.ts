@@ -14,7 +14,7 @@ import { AllRemindersPage} from "../pages/all-reminders/all-reminders";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = NewReminderPage;
+  rootPage: any = AllRemindersPage;
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
@@ -22,8 +22,7 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: AllRemindersPage },
-      { title: "Add Reminder", component: NewReminderPage}
+      { title: 'All Reminders', component: AllRemindersPage }
     ];
 
   }
