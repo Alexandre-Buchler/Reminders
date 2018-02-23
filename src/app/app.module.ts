@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { NewReminderPage } from "../pages/new-reminder/new-reminder";
 import{ AllRemindersPage} from "../pages/all-reminders/all-reminders";
+import { TodayPage } from '../pages/today/today';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,8 +20,9 @@ import { IonicStorageModule } from "@ionic/storage";
     HomePage,
     ListPage,
     NewReminderPage,
-    AllRemindersPage
-
+    AllRemindersPage,
+    TodayPage
+    
 
   ],
   imports: [
@@ -36,7 +38,8 @@ import { IonicStorageModule } from "@ionic/storage";
     HomePage,
     ListPage,
     NewReminderPage,
-    AllRemindersPage
+    AllRemindersPage,
+    TodayPage
   ],
   providers: [
     StatusBar,

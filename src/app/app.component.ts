@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { NewReminderPage } from "../pages/new-reminder/new-reminder";
 import { AllRemindersPage} from "../pages/all-reminders/all-reminders";
+import { TodayPage} from "../pages/today/today";
 
 @Component({
   templateUrl: 'app.html'
