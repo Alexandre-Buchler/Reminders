@@ -15,7 +15,7 @@ import { TodayPage} from "../pages/today/today";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = AllRemindersPage;
+  rootPage: any = TodayPage;
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
@@ -23,7 +23,9 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'All Reminders', component: AllRemindersPage }
+      { title: 'All Reminders', component: AllRemindersPage },
+      { title: 'Today Page', component: TodayPage }
+
     ];
 
   }

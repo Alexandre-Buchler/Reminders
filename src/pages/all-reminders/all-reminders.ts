@@ -66,13 +66,8 @@ export class AllRemindersPage {
   }
 
   deleteReminder(reminderToDelete){
-    console.log(reminderToDelete)
-    this.reminders = this.reminders.filter(reminder =>{
+    this.reminders = this.reminders.filter(reminder => reminder.id != reminderToDelete.id)
 
-      reminder.id != reminderToDelete.id
-    })
-
-    
-
+    this.storage.set("reminders", this.reminders)
   }
 }
